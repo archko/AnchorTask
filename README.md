@@ -1,3 +1,4 @@
+### fork from https://github.com/gdutxiaoxu/AnchorTask
 # 在原来的gdutxiaoxu/AnchorTask修改的地方:
 > 去除了多余的测试类,升级了gradle,去除旧的Kotlin库.<br>
 > task添加内部的初始化状态,已经初始化过的task不再初始化了,此修改可以在延迟初始化中使用.<br>
@@ -11,12 +12,7 @@
 使用注意事项:初始化以ui任务为主,异步线程的任务不依赖ui任务.而异步任务间尽量不依赖.ui任务不依赖异步任务.<br>
 
 
-## ======================
-> 我的 CSDN 博客:https://blog.csdn.net/gdutxiaoxu <br>
-> 我的掘金：https://juejin.im/user/2207475076966584  <br>
-> github: https://github.com/gdutxiaoxu/  <br>
-> 微信公众号：程序员徐公  <br>
-
+### ===================================
 
 #  AnchorTask
 
@@ -72,25 +68,3 @@ AnchorTask 的原理不复杂，本质是有向无环图与多线程知识的结
 [alpha](https://github.com/alibaba/alpha)
 
 [AppStartFaster](https://github.com/NoEndToLF/AppStartFaster)
-
-# 系列文章
-
-这几篇文章从 0 到 1，讲解 DAG 有向无环图是怎么实现的，以及在 Android 启动优化的应用。
-
-**推荐理由：现在挺多文章一谈到启动优化，动不动就聊拓扑结构，这篇文章从数据结构到算法、到设计都给大家说清楚了，开源项目也有非常强的借鉴意义。**
-
-[Android 启动优化（一） - 有向无环图]( https://mp.weixin.qq.com/s/xWYe-uxgXTPuitYcLgXYNg)
-
-[Android 启动优化（二） - 拓扑排序的原理以及解题思路]( https://mp.weixin.qq.com/s/ShfxD_Z7M_NuWYNodn-vqA)
-
-[Android 启动优化（三）- AnchorTask 开源了]( https://mp.weixin.qq.com/s/YRUpf9jKEwIHV0A4FqltXg)
-
-[Android 启动优化（四）- AnchorTask 是怎么实现的](https://mp.weixin.qq.com/s/6RKco9JTm6ZrFyw99k9Rlg)
-
-[Android 启动优化（五）- AnchorTask 1.0.0 版本正式发布了]( https://mp.weixin.qq.com/s/0MsJa0ZepWkPUs-ymnVb-w)
-
-[Android 启动优化（六）- 深入理解布局优化](https://mp.weixin.qq.com/s/7_dQd2wGZYKWf9kHNlv2fg)
-
-**如果觉得对你有所帮助的，可以关注我的微信公众号，程序员徐公。主要更新 Android 技术，算法，职场相关的。**
-
-![](https://raw.githubusercontent.com/gdutxiaoxu/blog_pic/master/21/0120210409172003.png)
