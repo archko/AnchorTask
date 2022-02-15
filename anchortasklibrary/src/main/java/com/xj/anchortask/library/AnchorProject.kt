@@ -1,11 +1,13 @@
 package com.xj.anchortask.library
 
 import android.content.Context
+import android.util.Log
 import com.xj.anchortask.library.log.LogUtils
 import com.xj.anchortask.library.monitor.ExecuteMonitor
 import com.xj.anchortask.library.monitor.OnGetMonitorRecordCallback
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executor
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -19,7 +21,25 @@ class AnchorProject private constructor(val builder: Builder) {
         LogUtils.init("AnchorTaskLibrary")
     }
 
-    private val threadPoolExecutor: ThreadPoolExecutor =
+    companion object {
+        /**
+         * 启动流程的模式，适用于主进程
+         */
+        val MAIN_PROCESS_MODE = 0x00000001
+
+        /**
+         * 启动流程的模式，适用于所有非主进程
+         */
+        val SECONDARY_PROCESS_MODE = 0x00000002
+
+        /**
+         * 启动流程的模式，适用于所有进程，如果不指定具体的模式，默认就是所有进程。
+         */
+        val ALL_PROCESS_MODE = 0x00000003
+    }
+
+    private val processMode: Int = builder.processMode
+    private val threadPoolExecutor: Executor =
         builder.threadPoolExecutor ?: TaskExecutorManager.instance.cpuThreadPoolExecutor
 
     // 存储所有的任务,key 是 taskName，value 是 AnchorTask
@@ -92,7 +112,25 @@ class AnchorProject private constructor(val builder: Builder) {
         }
     }
 
-    fun start(): AnchorProject {
+    fun start(context: Context): AnchorProject {
+        when (processMode) {
+            MAIN_PROCESS_MODE -> {
+                if (!AnchorTaskUtils.isInMainProcess(context)) {
+                    Log.e("TAG", "start: processMode is $processMode, current process is not main")
+                    return this
+                }
+            }
+            SECONDARY_PROCESS_MODE -> {
+                if (AnchorTaskUtils.isInMainProcess(context)) {
+                    Log.e("TAG", "start: processMode is $processMode, current process is main")
+                    return this
+                }
+            }
+            ALL_PROCESS_MODE -> {
+                Log.d("TAG", "start: processMode is $processMode")
+            }
+        }
+
         executeMonitor.recordProjectStart()
         this.listeners.forEach {
             it.onProjectStart()
@@ -124,8 +162,8 @@ class AnchorProject private constructor(val builder: Builder) {
             private const val TAG = "AnchorTaskDispatcher"
         }
 
-
-        var threadPoolExecutor: ThreadPoolExecutor? = null
+        var processMode: Int = ALL_PROCESS_MODE
+        var threadPoolExecutor: Executor? = null
             private set
 
         private lateinit var context: Context
@@ -237,6 +275,10 @@ class AnchorProject private constructor(val builder: Builder) {
             return this
         }
 
+        fun setProcessMode(processMode: Int): Builder {
+            this.processMode = processMode
+            return this
+        }
 
         fun build(): AnchorProject {
             val sortResult = AnchorTaskUtils.getSortResult(list, taskMap, taskChildMap)

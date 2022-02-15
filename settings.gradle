@@ -1,3 +1,2 @@
 include ':anchortasklibrary'
 include ':app'
-rootProject.name = "AnchorTask"

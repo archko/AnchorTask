@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import com.xj.anchortask.anchorTask.TestTaskUtils
-import com.xj.anchortask.asyncInflate.page.AsyncUtils
 import com.xj.anchortask.library.OnProjectExecuteListener
 import com.xj.anchortask.library.monitor.OnGetMonitorRecordCallback
 
@@ -12,7 +11,6 @@ import com.xj.anchortask.library.monitor.OnGetMonitorRecordCallback
  * Created by jun xu on 2/1/21.
  */
 class MyApplication : Application() {
-
 
     companion object {
         const val TAG = "AnchorTaskApplication"
@@ -60,8 +58,5 @@ class MyApplication : Application() {
             }
 
         })
-
     }
-
-
 }

@@ -1,11 +1,12 @@
 package com.xj.anchortask.anchorTask
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.xj.anchortask.R
 import com.xj.anchortask.library.OnProjectExecuteListener
 import com.xj.anchortask.library.monitor.OnGetMonitorRecordCallback
-import kotlinx.android.synthetic.main.activity_anchortask_test.*
 
 class AnchorTaskTestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,14 +17,17 @@ class AnchorTaskTestActivity : AppCompatActivity() {
 
     private fun initAnchorTask() {
         val sb2 = StringBuilder()
+        val btn_execute: Button = findViewById(R.id.btn_execute)
+        val btn_execute2: Button = findViewById(R.id.btn_execute2)
+        val text: TextView = findViewById(R.id.text)
+        val text2: TextView = findViewById(R.id.text2)
         text2.text = "正在执行中"
         val projectExecuteListener = object : OnProjectExecuteListener {
             val sb = StringBuffer()
             override fun onProjectStart() {
-                if (sb.length > 0) {
+                if (sb.isNotEmpty()) {
                     sb.delete(0, sb.length)
                 }
-
             }
 
             override fun onTaskFinish(taskName: String) {

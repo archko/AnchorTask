@@ -1,32 +1,28 @@
+# 在原来的gdutxiaoxu/AnchorTask修改的地方:
+> 去除了多余的测试类,升级了gradle,去除旧的Kotlin库.
+> task添加内部的初始化状态,已经初始化过的task不再初始化了,此修改可以在延迟初始化中使用.
+> 内部的task,如果是ui线程task依赖了非ui线程的task,异步线程执行时间过长会发生anr.程序内部不允许这种依赖,抛出异常,getSortResult()方法修改.
+> 对于进程添加判断,如果当前进程不是目标进程模式,不作初始化操作.
+
+# 已知bug
+> 由于调度是在ui线程,所以当非ui线程任务依赖了ui线程任务是正常的,而ui线程的任务,依赖了非ui线程的任务,会有anr的风险.比如在app.oncreate中初始化一部分,另一部分是在ui的Activity同意协议后再作的初始化,这时ui任务依赖了非ui任务,用户操作了ui就会有anr的风险.
+> 延迟初始化中,两个非ui任务有依赖,目前这个状态无法处理
+
+使用注意事项:初始化以ui任务为主,异步线程的任务不依赖ui任务.而异步任务间尽量不依赖.ui任务不依赖异步任务.
+
+
+# ====================== =====================
 > 我的 CSDN 博客:https://blog.csdn.net/gdutxiaoxu <br>
 > 我的掘金：https://juejin.im/user/2207475076966584  <br>
 > github: https://github.com/gdutxiaoxu/  <br>
 > 微信公众号：程序员徐公  <br>
 
 
-
 #  AnchorTask
 
 锚点任务，可以用来解决多线程加载任务依赖的问题。实现原理是使用有向无环图，常见的，比如 Android 启动优化，通常会进行多线程异步加载。
 
-
-
-
-
 # 基本使用
-
-第一步：在 moulde build.gradle 配置远程依赖
-
-
-```
-implementation 'com.xj.android:anchortask:1.0.0'
-```
-
-最新的版本号可以看这里 [lastedt version](https://dl.bintray.com/xujun94/maven/com/xj/android/anchortask/)
-
-# 具体使用文档
-
-
 
 ## 0.1.0 版本
 

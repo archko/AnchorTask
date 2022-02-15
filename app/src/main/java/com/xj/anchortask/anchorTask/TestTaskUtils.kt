@@ -75,7 +75,7 @@ object TestTaskUtils {
 
         }
 
-        project.start().await(1000)
+        project.start(context).await(1000)
     }
 
     fun executeTask2(
@@ -147,6 +147,6 @@ object TestTaskUtils {
 
         }
 
-        project.start().await(1000)
+        project.start(context).await(1000)
     }
 }
